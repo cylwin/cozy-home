@@ -12,6 +12,7 @@ photo             = require './photo'
 logs              = require './logs'
 backgrounds       = require './backgrounds'
 help              = require './help'
+iban              = require './iban'
 
 
 module.exports =
@@ -121,4 +122,5 @@ module.exports =
     'photos/thumbs/:photoid.jpg' : get : photo.thumb
     'photos/raws/:photoid.jpg'   :
         get : photo.raw
-
+    'api/ibans':
+        get : iban.get

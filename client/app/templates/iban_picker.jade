@@ -1,0 +1,15 @@
+p Select an IBAN number in this list
+
+table
+    for iban in ibans
+        tr
+            td
+                input(
+                    type="radio",
+                    name="iban",
+                    value=iban.iban
+                    class="iban-radio"
+                )
+            td=iban.bankName
+            td=iban.title
+            td=iban.iban

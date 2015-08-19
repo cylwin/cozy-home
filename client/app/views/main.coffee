@@ -13,6 +13,8 @@ ApplicationsListView   = require 'views/home'
 SocketListener         = require 'lib/socket_listener'
 User                   = require 'models/user'
 IntentManager          = require 'lib/intent_manager'
+IbanPicker             = require './iban_picker'
+IbanColection          = require 'collections/iban'
 
 # View describing main screen for user once he is logged
 module.exports = class HomeView extends BaseView
@@ -54,6 +56,15 @@ module.exports = class HomeView extends BaseView
 
         $(window).resize @forceIframeRendering
         @forceIframeRendering()
+
+        #function for the EDF application. EDF can display this popup to let
+        #the user transmit an IBAN number
+        window.getIban = (callback)->
+            params = {
+                collection: new IbanColection([{test: "test"}])
+            }
+
+            new IbanPicker params, callback
 
 
     ### Functions ###

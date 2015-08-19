@@ -46,3 +46,12 @@ module.exports =
                     d = new Date(doc.lastModification)
                     emit([d.getFullYear(),d.getMonth()+1,d.getDate()], doc._id)
             reduce: '_count'
+
+    bank:
+        all: cozydb.defaultRequests.all
+        byUuid: (doc) ->
+            emit(doc.uuid, doc)
+
+
+    bankaccount:
+        all: cozydb.defaultRequests.all
