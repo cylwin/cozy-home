@@ -259,6 +259,32 @@ module.exports = DeviceCollection = (function(_super) {
 })(BaseCollection);
 });
 
+;require.register("collections/iban", function(exports, require, module) {
+var BaseCollection, Iban, IbanCollection, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+BaseCollection = require('lib/base_collection');
+
+Iban = require('models/application');
+
+module.exports = IbanCollection = (function(_super) {
+  __extends(IbanCollection, _super);
+
+  function IbanCollection() {
+    _ref = IbanCollection.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  IbanCollection.prototype.model = Iban;
+
+  IbanCollection.prototype.url = 'api/ibans/';
+
+  return IbanCollection;
+
+})(BaseCollection);
+});
+
 ;require.register("collections/notifications", function(exports, require, module) {
 var BaseCollection, Notification, NotificationCollection, _ref,
   __hasProp = {}.hasOwnProperty,
@@ -2168,6 +2194,28 @@ module.exports = Device = (function(_super) {
 })(Backbone.Model);
 });
 
+;require.register("models/iban", function(exports, require, module) {
+var BaseModel, Iban, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+BaseModel = require('lib/base_model').BaseModel;
+
+module.exports = Iban = (function(_super) {
+  __extends(Iban, _super);
+
+  function Iban() {
+    _ref = Iban.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  Iban.prototype.urlRoot = 'api/ibans/';
+
+  return Iban;
+
+})(Backbone.Model);
+});
+
 ;require.register("models/instance", function(exports, require, module) {
 var Instance, request, _ref,
   __hasProp = {}.hasOwnProperty,
@@ -2974,6 +3022,62 @@ var buf = [];
 with (locals || {}) {
 var interp;
 buf.push('<div class="application-inner"><div class="vertical-aligner"><img src="" class="icon"/><img src="/img/spinner.svg" class="spinner"/><p class="app-title">' + escape((interp = app.displayName) == null ? '' : interp) + '</p></div></div>');
+}
+return buf.join("");
+};
+});
+
+require.register("templates/iban_picker", function(exports, require, module) {
+module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var buf = [];
+with (locals || {}) {
+var interp;
+buf.push('<p>Select an IBAN number in this list</p><table>');
+// iterate ibans
+;(function(){
+  if ('number' == typeof ibans.length) {
+
+    for (var $index = 0, $$l = ibans.length; $index < $$l; $index++) {
+      var iban = ibans[$index];
+
+buf.push('<tr><td><input');
+buf.push(attrs({ 'type':("radio"), 'name':("iban"), 'value':(iban.iban), "class": ("iban-radio") }, {"type":true,"name":true,"value":true,"class":true}));
+buf.push('/></td><td>');
+var __val__ = iban.bankName
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</td><td>');
+var __val__ = iban.title
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</td><td>');
+var __val__ = iban.iban
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</td></tr>');
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in ibans) {
+      $$l++;      var iban = ibans[$index];
+
+buf.push('<tr><td><input');
+buf.push(attrs({ 'type':("radio"), 'name':("iban"), 'value':(iban.iban), "class": ("iban-radio") }, {"type":true,"name":true,"value":true,"class":true}));
+buf.push('/></td><td>');
+var __val__ = iban.bankName
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</td><td>');
+var __val__ = iban.title
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</td><td>');
+var __val__ = iban.iban
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</td></tr>');
+    }
+
+  }
+}).call(this);
+
+buf.push('</table>');
 }
 return buf.join("");
 };
@@ -4979,6 +5083,81 @@ module.exports = ApplicationRow = (function(_super) {
 })(BaseView);
 });
 
+;require.register("views/iban_picker", function(exports, require, module) {
+var Modal, PhotoPickerCroper, template, _ref,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Modal = require('../views/modal');
+
+template = require('../templates/iban_picker');
+
+module.exports = PhotoPickerCroper = (function(_super) {
+  __extends(PhotoPickerCroper, _super);
+
+  function PhotoPickerCroper() {
+    this.resizeHandler = __bind(this.resizeHandler, this);
+    _ref = PhotoPickerCroper.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  PhotoPickerCroper.prototype.events = function() {
+    return _.extend(PhotoPickerCroper.__super__.events.apply(this, arguments), {
+      'click a.next': 'submit'
+    });
+  };
+
+  PhotoPickerCroper.prototype.initialize = function(params, cb) {
+    var body;
+    this.id = 'object-picker';
+    this.title = t('pick iban');
+    this.config = {
+      cssSpaceName: "object-picker",
+      singleSelection: true,
+      yes: t('modal ok'),
+      no: t('modal cancel'),
+      cb: cb
+    };
+    this.params = params;
+    this.state = {
+      currentStep: 'objectPicker',
+      img_naturalW: 0,
+      img_naturalH: 0
+    };
+    this.el.dataset.step = this.state.currentStep;
+    PhotoPickerCroper.__super__.initialize.call(this, this.config);
+    body = this.el.querySelector('.modalCY-body');
+    body.innerHTML = template({
+      ibans: []
+    });
+    this.body = body;
+    $.get("api/ibans", function(ibans) {
+      return body.innerHTML = template({
+        ibans: ibans
+      });
+    });
+    return true;
+  };
+
+  PhotoPickerCroper.prototype.onYes = function() {
+    var iban;
+    iban = $('input[name=iban]:checked').val();
+    this.cb(null, iban);
+    return this.close();
+  };
+
+  PhotoPickerCroper.prototype.resizeHandler = function(event) {
+    if (this.state.activePanel.resizeHandler) {
+      return this.state.activePanel.resizeHandler();
+    }
+  };
+
+  return PhotoPickerCroper;
+
+})(Modal);
+});
+
 ;require.register("views/long-list-images", function(exports, require, module) {
 var BUFFER_COEF, CELL_PADDING, LongList, MAX_SPEED, MONTH_HEADER_HEIGHT, MONTH_LABEL_TOP, Photo, SAFE_ZONE_COEF, THROTTLE, THROTTLE_INDEX, THUMB_DIM_UNIT, THUMB_HEIGHT,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
@@ -6541,7 +6720,7 @@ module.exports = LongList = (function() {
 });
 
 ;require.register("views/main", function(exports, require, module) {
-var AccountView, AppCollection, ApplicationsListView, BaseView, ConfigApplicationsView, DeviceCollection, HelpView, HomeView, IntentManager, MarketView, NavbarView, NotificationCollection, SocketListener, StackAppCollection, User, appIframeTemplate,
+var AccountView, AppCollection, ApplicationsListView, BaseView, ConfigApplicationsView, DeviceCollection, HelpView, HomeView, IbanColection, IbanPicker, IntentManager, MarketView, NavbarView, NotificationCollection, SocketListener, StackAppCollection, User, appIframeTemplate,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -6575,6 +6754,10 @@ SocketListener = require('lib/socket_listener');
 User = require('models/user');
 
 IntentManager = require('lib/intent_manager');
+
+IbanPicker = require('./iban_picker');
+
+IbanColection = require('collections/iban');
 
 module.exports = HomeView = (function(_super) {
   __extends(HomeView, _super);
@@ -6625,7 +6808,18 @@ module.exports = HomeView = (function(_super) {
     this.backButton = this.$('.back-button');
     this.backButton.hide();
     $(window).resize(this.forceIframeRendering);
-    return this.forceIframeRendering();
+    this.forceIframeRendering();
+    return window.getIban = function(callback) {
+      var params;
+      params = {
+        collection: new IbanColection([
+          {
+            test: "test"
+          }
+        ])
+      };
+      return new IbanPicker(params, callback);
+    };
   };
 
   /* Functions*/
