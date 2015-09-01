@@ -1012,6 +1012,13 @@ button::-moz-focus-inner {
   overflow: hidden;
   background-color: #fff;
 }
+.modalCY.iban-picker {
+  height: 40%;
+  width: 80%;
+}
+.modalCY.iban-picker .modalCY-body {
+  display: block;
+}
 .modalCY .modalCY-header {
   -webkit-flex-shrink: 0;
   flex-shrink: 0;

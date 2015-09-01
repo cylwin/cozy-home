@@ -3033,7 +3033,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<p>Select an IBAN number in this list</p><table>');
+buf.push('<div><h5>Sélectionnez un compte en banque dans la liste ci-dessous</h5></div><div><table>');
 // iterate ibans
 ;(function(){
   if ('number' == typeof ibans.length) {
@@ -3077,7 +3077,7 @@ buf.push('</td></tr>');
   }
 }).call(this);
 
-buf.push('</table>');
+buf.push('</table></div>');
 }
 return buf.join("");
 };
@@ -5084,7 +5084,7 @@ module.exports = ApplicationRow = (function(_super) {
 });
 
 ;require.register("views/iban_picker", function(exports, require, module) {
-var Modal, PhotoPickerCroper, template, _ref,
+var IbanPicker, Modal, template, _ref,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -5093,27 +5093,27 @@ Modal = require('../views/modal');
 
 template = require('../templates/iban_picker');
 
-module.exports = PhotoPickerCroper = (function(_super) {
-  __extends(PhotoPickerCroper, _super);
+module.exports = IbanPicker = (function(_super) {
+  __extends(IbanPicker, _super);
 
-  function PhotoPickerCroper() {
+  function IbanPicker() {
     this.resizeHandler = __bind(this.resizeHandler, this);
-    _ref = PhotoPickerCroper.__super__.constructor.apply(this, arguments);
+    _ref = IbanPicker.__super__.constructor.apply(this, arguments);
     return _ref;
   }
 
-  PhotoPickerCroper.prototype.events = function() {
-    return _.extend(PhotoPickerCroper.__super__.events.apply(this, arguments), {
+  IbanPicker.prototype.events = function() {
+    return _.extend(IbanPicker.__super__.events.apply(this, arguments), {
       'click a.next': 'submit'
     });
   };
 
-  PhotoPickerCroper.prototype.initialize = function(params, cb) {
+  IbanPicker.prototype.initialize = function(params, cb) {
     var body;
-    this.id = 'object-picker';
-    this.title = t('pick iban');
+    this.id = 'iban-picker';
+    this.title = t('Vos comptes en banque');
     this.config = {
-      cssSpaceName: "object-picker",
+      cssSpaceName: "iban-picker",
       singleSelection: true,
       yes: t('modal ok'),
       no: t('modal cancel'),
@@ -5126,7 +5126,7 @@ module.exports = PhotoPickerCroper = (function(_super) {
       img_naturalH: 0
     };
     this.el.dataset.step = this.state.currentStep;
-    PhotoPickerCroper.__super__.initialize.call(this, this.config);
+    IbanPicker.__super__.initialize.call(this, this.config);
     body = this.el.querySelector('.modalCY-body');
     body.innerHTML = template({
       ibans: []
@@ -5140,20 +5140,20 @@ module.exports = PhotoPickerCroper = (function(_super) {
     return true;
   };
 
-  PhotoPickerCroper.prototype.onYes = function() {
+  IbanPicker.prototype.onYes = function() {
     var iban;
     iban = $('input[name=iban]:checked').val();
     this.cb(null, iban);
     return this.close();
   };
 
-  PhotoPickerCroper.prototype.resizeHandler = function(event) {
+  IbanPicker.prototype.resizeHandler = function(event) {
     if (this.state.activePanel.resizeHandler) {
       return this.state.activePanel.resizeHandler();
     }
   };
 
-  return PhotoPickerCroper;
+  return IbanPicker;
 
 })(Modal);
 });
