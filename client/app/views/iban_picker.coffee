@@ -2,7 +2,7 @@ Modal                = require '../views/modal'
 template             = require '../templates/iban_picker'
 
 
-module.exports = class PhotoPickerCroper extends Modal
+module.exports = class IbanPicker extends Modal
 
 ################################################################################
 ## PUBLIC SECTION
@@ -19,11 +19,11 @@ module.exports = class PhotoPickerCroper extends Modal
     initialize: (params, cb) ->
         ####
         # init config & state and super
-        @id     = 'object-picker'
-        @title  = t('pick iban')
+        @id     = 'iban-picker'
+        @title  = t('Vos comptes en banque')
 
         @config =
-            cssSpaceName    : "object-picker"
+            cssSpaceName    : "iban-picker"
             singleSelection : true # tells if user can select one or more photo
             yes             : t 'modal ok'
             no              : t 'modal cancel'
@@ -41,6 +41,7 @@ module.exports = class PhotoPickerCroper extends Modal
         body.innerHTML    = template({ibans : []})
         @body             = body
 
+
         # @collection.fetch()
         # @listenTo @collection, 'all', =>
         # I have a problem to solve with my collection, I used a $.get to bypass
@@ -50,8 +51,6 @@ module.exports = class PhotoPickerCroper extends Modal
 
         return true
 
-
-    # overload the modal behavour : "ok" leads to the cropping step
     onYes: ->
         iban = $('input[name=iban]:checked').val()
         @cb null, iban

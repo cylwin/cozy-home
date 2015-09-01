@@ -1,15 +1,16 @@
-p Select an IBAN number in this list
-
-table
-    for iban in ibans
-        tr
-            td
-                input(
-                    type="radio",
-                    name="iban",
-                    value=iban.iban
-                    class="iban-radio"
-                )
-            td=iban.bankName
-            td=iban.title
-            td=iban.iban
+div
+    h5 Sélectionnez un compte en banque dans la liste ci-dessous
+div
+    table
+        for iban in ibans
+            tr
+                td
+                    input(
+                        type="radio",
+                        name="iban",
+                        value=iban.iban
+                        class="iban-radio"
+                    )
+                td=iban.bankName
+                td=iban.title
+                td=iban.iban
